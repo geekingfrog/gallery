@@ -1,0 +1,25 @@
+{
+  "name": "galery",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "~1.0.1",
+    "koa": "~0.3.0",
+    "koa-favicon": "~1.0.1",
+    "log4js": "~0.6.9",
+    "co-fs": "~1.1.1",
+    "koa-trie-router": "~1.0.3",
+    "koa-mount": "~1.2.3",
+    "lodash": "~2.4.1",
+    "gm": "~1.14.2"
+  },
+  "devDependencies": {
+    "chai": "~1.9.0"
+  }
+}
