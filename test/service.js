@@ -17,15 +17,6 @@ var itco = function(name, fn) {
 
 describe('basic service test', function() {
 
-  // before(function(done) {
-  //   Promise.spawn(function* () {
-  //     service = yield Promise.try(require('../lib/ponyService').fn(Promise, _, gm, fs, path));
-  //     console.log('before');
-  //     done()
-  //   }).catch(done);
-  // });
-
-
   itco('findAll', function* (done) {
     var ponies = yield service.findAll();
     assert.lengthOf(ponies, 24);

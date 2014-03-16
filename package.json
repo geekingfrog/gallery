@@ -17,7 +17,9 @@
     "koa-trie-router": "~1.0.3",
     "koa-mount": "~1.2.3",
     "lodash": "~2.4.1",
-    "gm": "~1.14.2"
+    "gm": "~1.14.2",
+    "koa-views": "~1.0.0",
+    "jade": "~1.1.5"
   },
   "devDependencies": {
     "chai": "~1.9.0"

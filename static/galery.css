@@ -1,0 +1,19 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  border: none;
+  margin: 0;
+  padding: 0;
+}
+
+div#galery {
+  position: relative;
+}
+
+img {
+  margin: 0;
+  padding: 0;
+  transition: all 2s;
+}

@@ -32,14 +32,13 @@ Promise.spawn(function* () {
     var app = koa();
     var appLogger = yield container.resolve('appLogger');
 
-    // api definition
-    // var api = koa();
-    // api.use(require('koa-trie-router')(api))
-    //
-    // var node = api.route('/test').get(function* () {
-    //   logger.debug(arguments);
-    //   this.body = 'foobared !';
-    // });
+    // log everything from here
+    app.use(appLogger);
+
+    var views = require('koa-views');
+    var path = require('path');
+    views = views(path.resolve(__dirname, 'view'), 'jade');
+    app.use(views.use());
 
     container.register('api', require('./lib/api'));
     var api = yield container.resolve('api');
@@ -49,8 +48,26 @@ Promise.spawn(function* () {
     // bounce favicon request
     app.use(favicon());
 
-    // log everything from here
-    app.use(appLogger);
+    container.register('landing', require('./lib/landing'));
+    var router = yield container.resolve('koaTrieRouter');
+    app.use(router(app));
+    var ponyService = yield container.resolve('ponyService');
+    app.route('/').get(function* () {
+      try {
+        console.log(this.url);
+        var ponies = yield ponyService.findAll();
+        console.log('rendering index.jade');
+        console.dir(ponies);
+
+        this.body = yield this.render('index.jade', {ponies: ponies});
+      } catch(e) {
+        console.log('error');
+        console.log(e);
+      }
+
+    });
+    // var landing = yield container.resolve('landing');
+    // app.use(landing);
 
     app.use(serve('static/'));
 
