@@ -24,10 +24,10 @@ container.registerAndExport('_', require('lodash'));
 container.registerAndExport('path', require('path'));
 
 container.registerAndExport('logger', logger);
-container.register('appLogger', require('./lib/logger'));
+container.register('appLogger', ['logger', require('./lib/logger')]);
 require('./lib/service').register(container);
 
-Promise.spawn(function* () {
+Promise.coroutine(function* () {
   try {
     var app = koa();
     var appLogger = yield container.resolve('appLogger');
@@ -44,7 +44,6 @@ Promise.spawn(function* () {
     var api = yield container.resolve('api');
     app.use(mount('/api', api));
 
-
     // bounce favicon request
     app.use(favicon());
 
@@ -52,6 +51,8 @@ Promise.spawn(function* () {
     var router = yield container.resolve('koaTrieRouter');
     app.use(router(app));
     var ponyService = yield container.resolve('ponyService');
+
+
     app.route('/').get(function* () {
       try {
         console.log(this.url);
@@ -74,10 +75,7 @@ Promise.spawn(function* () {
     app.listen(8000);
     console.log('listening on port 8000');
   } catch(e) {
-    logger.error(e.message);
-    logger.error(e.stack);
+    logger.error(e);
   }
 
-});
-
-
+})();
