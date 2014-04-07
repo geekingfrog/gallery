@@ -1,4 +1,4 @@
-Zepto(function($) {
+(function($) {
   'use strict';
 
   var imagesP = $.getJSON('/api/ponies')
@@ -30,7 +30,8 @@ Zepto(function($) {
       return Math.floor(100 * img.size.width / img.size.height);
     });
 
-    var partition = linear_partition(weightSet, numRows);
+    var linearPartition = require('./linear-partition').linear_partition;
+    var partition = linearPartition(weightSet, numRows);
     console.log('partition: ', partition);
 
     var i = 0;
@@ -70,7 +71,7 @@ Zepto(function($) {
         $(domImg).animate({
           left: offsetX+'px',
           top: offsetY+'px',
-          scale: 1
+          transform: 'scale(1)'
         }, 700);
 
         offsetX += finalWidth;
@@ -114,11 +115,11 @@ Zepto(function($) {
     });
 
     invisible.forEach(function(img) {
-      $(img.el).animate({scale: 0});
+      $(img.el).animate({'-webkit-transform': 'scale(0)'});
     });
 
     computeGalery(visible);
 
   }, 2000);
 
-});
+})(jQuery);

@@ -9,24 +9,28 @@ module.exports = (grunt) ->
     concat:
       dev:
         src: [
-          'bower_components/jquery/dist/jquery.js'
+          'bower_components/jquery/dist/jquery.js',
+          'bower_components/lodash/dist/lodash.js',
+          'bower_components/prefixfree/prefixfree.min.js'
         ]
         dest: 'build/assets/vendor.js'
 
       prod:
         src: [
-          'bower_components/jquery/dist/jquery.min.js'
+          'bower_components/jquery/dist/jquery.min.js',
+          'bower_components/lodash/dist/lodash.min.js',
+          'bower_components/prefixfree/prefixfree.min.js'
         ]
         dest: 'dist/assets/vendor.min.js'
 
     browserify:
       dev:
         files:
-          'build/app/index.js': [ 'app/index.js', 'app/**/*.js' ]
+          'build/app/index.js': [ 'app/index.js']
 
       prod:
         files:
-          'dist/app/index.js': [ 'app/**/*.js' ]
+          'dist/app/index.js': [ 'app/index.js' ]
 
     watch:
 
