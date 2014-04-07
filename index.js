@@ -1,5 +1,7 @@
 'use strict';
 
+var env = process.env.NODE_ENV || 'development';
+
 var serve = require('koa-static');
 var favicon = require('koa-favicon');
 var Promise = require('bluebird');
@@ -30,6 +32,11 @@ require('./lib/service').register(container);
 Promise.coroutine(function* () {
   try {
     var app = koa();
+
+    if(env === 'development') {
+      app.use(require('koa-livereload')());
+    }
+
     var appLogger = yield container.resolve('appLogger');
 
     // log everything from here
@@ -70,7 +77,8 @@ Promise.coroutine(function* () {
     // var landing = yield container.resolve('landing');
     // app.use(landing);
 
-    app.use(serve('static/'));
+    if(env === 'development') app.use(serve('build/'));
+    else app.use(serve('dist/'));
 
     app.listen(8000);
     console.log('listening on port 8000');
