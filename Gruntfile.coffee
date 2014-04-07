@@ -78,6 +78,26 @@ module.exports = (grunt) ->
         files:
           'dist/index.html': ['app/index.jade']
 
+    copy:
+      dev:
+        files: [
+          expand: true
+          cwd: 'app/assets'
+          src: ['**']
+          dest: 'build/assets/'
+        ]
+
+      prod:
+        files: [
+          expand: true
+          src: ['app/assets/**']
+          dest: 'dist/assets/'
+        ]
+
+    sass:
+      dev:
+        files:
+          'build/assets/app.css': 'app/styles/galery.scss'
 
   require('load-grunt-tasks')(grunt)
 
@@ -86,14 +106,18 @@ module.exports = (grunt) ->
   grunt.registerTask 'build-dev', [
     'concat:dev',
     'browserify:dev'
-    'jade:dev'
+    'jade:dev',
+    'sass:dev',
+    'copy:dev'
   ]
 
   grunt.registerTask 'prod', [
     'concat:prod',
     'browserify:prod',
     'uglify'
-    'jade:prod'
+    'jade:prod',
+    'sass:dev',
+    'copy:dev'
   ]
 
   grunt.registerTask 'default', [
