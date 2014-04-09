@@ -8,12 +8,13 @@ body {
   padding: 0;
 }
 
-div#galery {
+div#gallery {
   position: relative;
 }
 
-img {
+#gallery img {
   margin: 0;
   padding: 0;
+  position: absolute;
   transition: all 2s;
 }

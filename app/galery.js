@@ -1,6 +1,8 @@
 (function($) {
   'use strict';
 
+  return;
+
   var imagesP = $.getJSON('/api/ponies')
   var viewport = {
     width: 900,

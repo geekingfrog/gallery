@@ -11,7 +11,8 @@ module.exports = (grunt) ->
         src: [
           'bower_components/jquery/dist/jquery.js',
           'bower_components/lodash/dist/lodash.js',
-          'bower_components/prefixfree/prefixfree.min.js'
+          'bower_components/react/react.js',
+          # 'bower_components/prefixfree/prefixfree.min.js'
         ]
         dest: 'build/assets/vendor.js'
 
@@ -19,11 +20,15 @@ module.exports = (grunt) ->
         src: [
           'bower_components/jquery/dist/jquery.min.js',
           'bower_components/lodash/dist/lodash.min.js',
-          'bower_components/prefixfree/prefixfree.min.js'
+          'bower_components/react/react.js',
+          # 'bower_components/prefixfree/prefixfree.min.js'
         ]
         dest: 'dist/assets/vendor.min.js'
 
     browserify:
+      options:
+        transform: [ require('grunt-react').browserify ]
+
       dev:
         files:
           'build/app/index.js': [ 'app/index.js']
@@ -32,10 +37,19 @@ module.exports = (grunt) ->
         files:
           'dist/app/index.js': [ 'app/index.js' ]
 
+    react:
+      files:
+        expand: true
+        cwd: 'app/templates'
+        src: '**/*.jsx'
+        dest: 'build/app/templates'
+        ext: '.js'
+
     watch:
 
       gruntfile:
         files: ['Gruntfile.coffee']
+        tasks: ['build-dev']
         options: { reload: true }
 
       scripts:
@@ -46,6 +60,21 @@ module.exports = (grunt) ->
       jade:
         files: ['app/index.jade']
         tasks: ['jade:dev']
+        options: { livereload: true }
+
+      copy:
+        files: ['app/testreact.js']
+        tasks: ['copy:dev']
+        options: { livereload: true }
+
+      sass:
+        files: ['app/styles/**/*.scss']
+        tasks: ['sass']
+        options: { livereload: true }
+
+      jsx:
+        files: ['app/templates/**/*.jsx']
+        tasks: ['browserify:dev']
         options: { livereload: true }
 
     uglify:
@@ -63,6 +92,9 @@ module.exports = (grunt) ->
             scripts: [
               './assets/vendor.js',
               './app/index.js'
+            ]
+            reactScripts: [
+              './app/app.js'
             ]
         files:
           'build/index.html': ['app/index.jade']
