@@ -11,7 +11,7 @@ module.exports = (grunt) ->
         src: [
           'bower_components/jquery/dist/jquery.js',
           'bower_components/lodash/dist/lodash.js',
-          'bower_components/react/react.js',
+          'bower_components/react/react-with-addons.js',
           # 'bower_components/prefixfree/prefixfree.min.js'
         ]
         dest: 'build/assets/vendor.js'
@@ -20,7 +20,7 @@ module.exports = (grunt) ->
         src: [
           'bower_components/jquery/dist/jquery.min.js',
           'bower_components/lodash/dist/lodash.min.js',
-          'bower_components/react/react.js',
+          'bower_components/react/react-with-addons.min.js',
           # 'bower_components/prefixfree/prefixfree.min.js'
         ]
         dest: 'dist/assets/vendor.min.js'
@@ -129,7 +129,7 @@ module.exports = (grunt) ->
     sass:
       dev:
         files:
-          'build/assets/app.css': 'app/styles/galery.scss'
+          'build/assets/app.css': 'app/styles/gallery.scss'
 
   require('load-grunt-tasks')(grunt)
 

@@ -29,7 +29,7 @@ var ImageList = React.createClass({
   render: function() {
     console.log('data: ', this.props.data);
     var imageNodes = this.props.data.map(function(img) {
-      return <ImageBox url={img.url}> </ImageBox>
+      return <ImageBox key={img.url} url={img.url}> </ImageBox>
     });
     var computeDisposition = require('../utils').computeDisposition;
     var viewport = {
@@ -52,6 +52,10 @@ var ImageList = React.createClass({
 
 var ImageBox = React.createClass({
   render: function() {
+    var classes = React.addons.classSet({
+      'image': true
+    });
+
     var style = {
       left: this.props.data.left,
       top: this.props.data.top,
@@ -59,17 +63,31 @@ var ImageBox = React.createClass({
       height: this.props.data.height,
     };
 
+    var imgStyle = _.omit(style, 'left', 'top');
+
     return (
-      <img src={this.props.data.url} style={style}/>
+      <div className={classes} style={style}>
+        <img src={this.props.data.url} style={imgStyle}/>
+        <ImageLegend data={this.props.data} />
+      </div>
     )
   }
 });
 
-var data = [{
-  url: 'foobared'
-}, {
-  url: 'bazqux'
-}];
+var ImageLegend = React.createClass({
+  render: function() {
+    return (
+      <div className='legend'>
+        <div className='banner'>
+          {this.props.data.name}
+        </div>
+        <ul>
+          <li> Kind: {this.props.data.kind} </li>
+        </ul>
+      </div>
+    );
+  }
+});
 
 React.renderComponent(
   <GalleryBox />,
