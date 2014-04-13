@@ -64,9 +64,14 @@ module.exports = function (Promise, _, gm, fs, path) {
   var addMetadata = Promise.coroutine(function* (file) {
     var name = getName(file);
     var size = yield getImageSize(file);
+    console.log('relative path: %s', path.relative(__dirname, file));
+
+    var r = /.*assets\//i
+    console.log('url: %s', path.relative(__dirname, file).replace(r, '/assets/'));
+
     return _.assign({}, {
       file: path.relative(__dirname, file).slice(3),
-      url: path.relative(__dirname, file).slice(3 + 'app/'.length)
+      url: path.relative(__dirname, file).replace(r, 'assets/')
     }, {name: name}, {size: size}, metadata[name]);
   });
 

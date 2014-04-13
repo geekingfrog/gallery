@@ -1,7 +1,5 @@
 'use strict';
 
-var env = process.env.NODE_ENV || 'development';
-
 var serve = require('koa-static');
 var favicon = require('koa-favicon');
 var Promise = require('bluebird');
@@ -32,8 +30,9 @@ require('./lib/service').register(container);
 Promise.coroutine(function* () {
   try {
     var app = koa();
+    console.log('app.env: %s', app.env);
 
-    if(env === 'development') {
+    if(app.env === 'development') {
       app.use(require('koa-livereload')());
     }
 
@@ -41,11 +40,6 @@ Promise.coroutine(function* () {
 
     // log everything from here
     app.use(appLogger);
-
-    var views = require('koa-views');
-    var path = require('path');
-    views = views(path.resolve(__dirname, 'view'), 'jade');
-    app.use(views.use());
 
     container.register('api', require('./lib/api'));
     var api = yield container.resolve('api');
@@ -74,10 +68,8 @@ Promise.coroutine(function* () {
       }
 
     });
-    // var landing = yield container.resolve('landing');
-    // app.use(landing);
 
-    if(env === 'development') app.use(serve('build/'));
+    if(app.env === 'development') app.use(serve('build/'));
     else app.use(serve('dist/'));
 
     app.listen(8000);
