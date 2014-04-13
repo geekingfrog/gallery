@@ -1,5 +1,12 @@
 $transition-duration: .4s;
 
+@mixin transform($transform) {
+  -webkit-transform: $transform;
+  -o-transform: $transform;
+  -moz-transform: $transform;
+  -ms-transform: $transform;
+  transform: $transform;
+}
 
 * {
   box-sizing: border-box;
@@ -15,8 +22,11 @@ body {
   margin: 0;
   padding: 0;
   position: absolute;
-  -webkit-transform: translateZ(0);
-  /* background: #777; */
+  @include transform(translateZ(0));
+}
+
+.image:hover {
+  cursor: pointer;
 }
 
 .imageList {
@@ -36,14 +46,14 @@ body {
   opacity: .9;
 
   .banner {
-    -webkit-transform: translateY(1em);
+    @include transform(translateY(1em));
   }
 
   ul {
     transition: none;
     margin: 0;
     padding: 2em 0 0 .5em;
-    -webkit-transform: translateY(0);
+    @include transform(translateY(0));
   }
 }
 
@@ -63,7 +73,7 @@ body {
     transition: all $transition-duration;
     text-align: center;
     /* margin-top: -1em; */
-    -webkit-transform: translateY(-2em);
+    @include transform(translateY(-2em));
     padding: 1em 0;
     background-color: #333;
   }
@@ -72,7 +82,7 @@ body {
     transition: all $transition-duration;
     margin-top: 3em;
     list-style-type: none;
-    -webkit-transform: translateY(40vh);
+    @include transform(translateY(40vh));
   }
 
 }
