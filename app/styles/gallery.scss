@@ -11,15 +11,17 @@ body {
   padding: 0;
 }
 
-div#gallery {
-  position: relative;
-}
-
 .image {
   margin: 0;
   padding: 0;
   position: absolute;
+  -webkit-transform: translateZ(0);
   /* background: #777; */
+}
+
+.imageList {
+  margin: 1em;
+  position: relative;
 }
 
 .image img {
@@ -30,7 +32,7 @@ div#gallery {
   transition: all $transition-duration;
 }
 
-.image:hover .legend {
+.image.details .legend {
   opacity: .9;
 
   .banner {
@@ -38,6 +40,9 @@ div#gallery {
   }
 
   ul {
+    transition: none;
+    margin: 0;
+    padding: 2em 0 0 .5em;
     -webkit-transform: translateY(0);
   }
 }

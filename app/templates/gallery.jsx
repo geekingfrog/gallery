@@ -2,6 +2,7 @@
  * @jsx React.DOM
  */
 
+var computeDisposition = require('../utils').computeDisposition;
 var GalleryBox = React.createClass({
   getInitialState: function() {
     return { data: [] }
@@ -20,6 +21,7 @@ var GalleryBox = React.createClass({
     return (
       <div className='galleryBox'>
         <ImageList data={this.state.data} />
+        <h1> Should be after </h1>
       </div>
     );
   }
@@ -27,23 +29,23 @@ var GalleryBox = React.createClass({
 
 var ImageList = React.createClass({
   render: function() {
-    console.log('data: ', this.props.data);
-    var imageNodes = this.props.data.map(function(img) {
-      return <ImageBox key={img.url} url={img.url}> </ImageBox>
-    });
-    var computeDisposition = require('../utils').computeDisposition;
     var viewport = {
-      width: 900,
-      height: $(window).height()
+      width: $(window).width()*.95,
+      // height: $(window).height()
+      height: window.innerHeight
     };
-    var imgs = computeDisposition(this.props.data, viewport);
-    console.log('computed images: ', imgs);
-    var imageNodes = imgs.map(function(img) {
-      return <ImageBox data={img}></ImageBox>;
-    });
 
+    var imgs = computeDisposition(this.props.data, viewport);
+    var imageNodes = imgs.map(function(img) {
+      return <ImageBox key={img.url} data={img}></ImageBox>;
+    });
+    var height=0;
+    var lastImage = imgs[imgs.length-1];
+    if(lastImage) height = lastImage.top + lastImage.height;
+
+    var style = { height: height };
     return (
-      <div className='imageList'>
+      <div style={style} className='imageList'>
         {imageNodes}
       </div>
     )
@@ -51,22 +53,31 @@ var ImageList = React.createClass({
 });
 
 var ImageBox = React.createClass({
-  render: function() {
+  getInitialState: function() {
+    return { clicked: false };
+  },
+
+  handleClick: function() {
+    this.setState({ clicked: !this.state.clicked });
+  },
+
+  render: function(sev) {
     var classes = React.addons.classSet({
-      'image': true
+      'image': true,
+      'details': this.state.clicked
     });
 
     var style = {
-      left: this.props.data.left,
-      top: this.props.data.top,
-      width: this.props.data.width,
-      height: this.props.data.height,
+      left: Math.floor(this.props.data.left),
+      top: Math.floor(this.props.data.top),
+      width: Math.ceil(this.props.data.width),
+      height: Math.ceil(this.props.data.height)
     };
 
     var imgStyle = _.omit(style, 'left', 'top');
 
     return (
-      <div className={classes} style={style}>
+      <div onClick={this.handleClick} className={classes} style={style}>
         <img src={this.props.data.url} style={imgStyle}/>
         <ImageLegend data={this.props.data} />
       </div>
@@ -83,6 +94,7 @@ var ImageLegend = React.createClass({
         </div>
         <ul>
           <li> Kind: {this.props.data.kind} </li>
+          <li> Eyes: {this.props.data.eyes} </li>
         </ul>
       </div>
     );

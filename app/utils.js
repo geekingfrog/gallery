@@ -34,7 +34,6 @@ module.exports.computeDisposition = function(images, viewport) {
   });
 
   var partition = linearPartition(weightSet, numRows);
-  console.log('partition: ', partition);
 
   var i = 0;
   var offsetY = 0, offsetX;
