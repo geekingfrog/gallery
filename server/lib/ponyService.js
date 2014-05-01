@@ -1,4 +1,7 @@
-module.exports = function (Promise, _, gm, fs, path) {
+'use strict';
+
+//@autoinject
+module.exports = function ponyService(Promise, _, gm, fs, path) {
   var ponyPath = path.resolve('app/assets/ponies');
   var ponyFiles = fs.readdirAsync(ponyPath).map(function(filename) {
     return path.resolve('app/assets/ponies', filename);
@@ -64,10 +67,10 @@ module.exports = function (Promise, _, gm, fs, path) {
   var addMetadata = Promise.coroutine(function* (file) {
     var name = getName(file);
     var size = yield getImageSize(file);
-    console.log('relative path: %s', path.relative(__dirname, file));
+    // console.log('relative path: %s', path.relative(__dirname, file));
 
     var r = /.*assets\//i
-    console.log('url: %s', path.relative(__dirname, file).replace(r, '/assets/'));
+    // console.log('url: %s', path.relative(__dirname, file).replace(r, '/assets/'));
 
     return _.assign({}, {
       file: path.relative(__dirname, file).slice(3),

@@ -24,13 +24,14 @@ container.registerAndExport('_', require('lodash'));
 container.registerAndExport('path', require('path'));
 
 container.registerAndExport('logger', logger);
-container.register('appLogger', ['logger', require('./lib/logger')]);
-require('./lib/service').register(container);
+container.registerAndExport('fs', Promise.promisifyAll(require('fs')));
 
 Promise.coroutine(function* () {
   try {
+    yield container.scan(['server/lib/**/*.js']);
+
     var app = koa();
-    console.log('app.env: %s', app.env);
+    logger.info('app.env: %s', app.env);
 
     if(app.env === 'development') {
       app.use(require('koa-livereload')());
@@ -41,14 +42,12 @@ Promise.coroutine(function* () {
     // log everything from here
     app.use(appLogger);
 
-    container.register('api', require('./lib/api'));
     var api = yield container.resolve('api');
     app.use(mount('/api', api));
 
     // bounce favicon request
     app.use(favicon());
 
-    container.register('landing', require('./lib/landing'));
     var router = yield container.resolve('koaTrieRouter');
     app.use(router(app));
     var ponyService = yield container.resolve('ponyService');
@@ -73,9 +72,9 @@ Promise.coroutine(function* () {
     else app.use(serve('dist/'));
 
     app.listen(8000);
-    console.log('listening on port 8000');
+    logger.info('listening on port 8000');
   } catch(e) {
-    logger.error(e);
+    logger.error(e.stack || e);
   }
 
 })();

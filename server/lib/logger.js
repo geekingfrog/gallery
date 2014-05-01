@@ -1,10 +1,8 @@
 // middleware to log the requests
 'use strict';
 
-module.exports = function(logger) {
-// module.exports.name = 'app-logger';
-// module.exports.dependencies = ['logger'];
-// module.exports.define = function(logger) {
+// @autoinject
+module.exports = function appLogger(logger) {
   let time = function(t) {
     if(t>1000) {
       return Math.round(t/1000)+'s';

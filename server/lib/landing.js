@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function(Promise, ponyService) {
+module.exports = function landing(Promise, ponyService) {
   return function* (next) {
     if(this.url !== '/') {
       console.log('yielding to the next one');

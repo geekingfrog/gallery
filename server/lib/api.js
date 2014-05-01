@@ -1,6 +1,7 @@
 'use strict';
 
-module.exports = function(koa, koaTrieRouter, logger, ponyService) {
+//@autoinject
+module.exports = function api(koa, koaTrieRouter, logger, ponyService) {
 
   var api = koa();
   api.use(koaTrieRouter(api));
